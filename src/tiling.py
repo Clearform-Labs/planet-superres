@@ -2,7 +2,7 @@
 tiling.py — Load satellite scenes and cut them into fixed-size patches.
 
 Supports:
-  - PlanetScope GeoTIFFs (3- or 4-band, uint16 → uint8 normalisation)
+  - PlanetScope GeoTIFFs (3- or 4-band uint8, Planet Visual product)
   - Standard images (JPG / PNG) via PIL
 Always returns (H, W, 3) uint8 RGB arrays.
 """
@@ -51,28 +51,8 @@ def _load_geotiff(path: Path) -> np.ndarray:
         n_bands = min(src.count, 3)
         data = src.read(list(range(1, n_bands + 1)))  # (C, H, W)
 
-        # Normalise uint16 → uint8
-        if data.dtype == np.uint16:
-            # Use 2nd–98th percentile stretch per-band for visibility
-            out = np.zeros_like(data, dtype=np.uint8)
-            for i in range(n_bands):
-                band = data[i].astype(np.float32)
-                p2, p98 = np.percentile(band, (2, 98))
-                p2 = max(p2, 0.0)
-                if p98 > p2:
-                    band = (band - p2) / (p98 - p2)
-                else:
-                    band = band / 65535.0
-                out[i] = (np.clip(band, 0, 1) * 255).astype(np.uint8)
-            data = out
-        elif data.dtype != np.uint8:
-            # Generic float or int → scale to uint8
-            data = data.astype(np.float32)
-            for i in range(n_bands):
-                mn, mx = data[i].min(), data[i].max()
-                if mx > mn:
-                    data[i] = (data[i] - mn) / (mx - mn) * 255
-            data = data.astype(np.uint8)
+        if data.dtype != np.uint8:
+            raise ValueError(f"{path.name} has dtype {data.dtype}; expected uint8 (Planet Visual product).")
 
         # (C, H, W) → (H, W, C)
         image = np.transpose(data, (1, 2, 0))

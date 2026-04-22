@@ -2,6 +2,7 @@
 data/raw/
 data/tiles_hr/
 data/tiles_lr/
+data/manifest.csv
 *.tif
 *.tiff
 
