@@ -6,6 +6,10 @@ data/manifest.csv
 *.tif
 *.tiff
 
+# Experiments (model weights, per-run results)
+experiments/
+models/
+
 # Python
 __pycache__/
 *.pyc

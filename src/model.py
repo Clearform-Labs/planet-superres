@@ -18,7 +18,7 @@ class PerceptualLoss(nn.Module):
 
     def __init__(self):
         super().__init__()
-        vgg = torchvision.models.vgg16(weights="IMAGENET1K_V1").features[:16]
+        vgg = torchvision.models.vgg16(weights="IMAGENET1K_V1").features[:16]  # type: ignore[index]
         self.vgg = vgg.eval()
         for p in self.vgg.parameters():
             p.requires_grad = False

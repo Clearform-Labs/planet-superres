@@ -28,6 +28,7 @@ def build(
     hr_dir: Path,
     lr_dir: Path,
     tile_size: int,
+    stride: int | None,
     scale: int,
     min_variance: float,
     max_nodata_frac: float,
@@ -50,6 +51,7 @@ def build(
         tiles = tile_image(
             img,
             tile_size=tile_size,
+            stride=stride,
             min_variance=min_variance,
             max_nodata_frac=max_nodata_frac,
         )
@@ -79,6 +81,7 @@ def main() -> None:
     parser.add_argument("--hr_dir",        type=Path, default=repo_root / "data/tiles_hr")
     parser.add_argument("--lr_dir",        type=Path, default=repo_root / "data/tiles_lr")
     parser.add_argument("--tile_size",     type=int,  default=128)
+    parser.add_argument("--stride",        type=int,  default=None)
     parser.add_argument("--scale",         type=int,  default=4)
     parser.add_argument("--min_variance",  type=float, default=50.0)
     parser.add_argument("--max_nodata_frac", type=float, default=0.0)
@@ -89,6 +92,7 @@ def main() -> None:
         hr_dir=args.hr_dir,
         lr_dir=args.lr_dir,
         tile_size=args.tile_size,
+        stride=args.stride,
         scale=args.scale,
         min_variance=args.min_variance,
         max_nodata_frac=args.max_nodata_frac,
