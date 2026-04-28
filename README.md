@@ -1,6 +1,6 @@
 # Planet Super-Resolution
 
-4× super-resolution on PlanetScope satellite imagery using a lightweight CNN. The model operates at LR resolution with residual blocks and sub-pixel convolution (PixelShuffle), trained on synthetically degraded satellite tiles and evaluated against a bicubic baseline.
+4× super-resolution on [Planet Labs](https://planet.com) satellite imagery using a lightweight CNN. The model operates at LR resolution with residual blocks and sub-pixel convolution (PixelShuffle), trained on synthetically degraded satellite tiles and evaluated against a bicubic baseline.
 
 **Best model (v3): +0.90 dB PSNR over bicubic, 0.616 SSIM, 0.470 LPIPS** on held-out test scenes.
 
@@ -19,10 +19,16 @@ Evaluated on 282 held-out test tiles across 2 AOIs (chicago-urban, sd-terrain-an
 
 ESPCN-style fully-convolutional CNN — all computation happens at LR resolution, with PixelShuffle at the end to upscale 4×. This means it can run on **any input size** at inference time, not just the 32×32 training tiles.
 
-- Residual blocks (6 blocks, 96 features in v3)
-- Global skip connection
-- L1 + perceptual (VGG-16) loss
-- ~1.5 MB trained weights
+```
+Input (3ch) → Conv2d 3→96, 3×3 → ReLU
+            → 6× ResBlock [Conv 96→96, 3×3 → ReLU → Conv 96→96, 3×3 + skip]
+            → Global skip connection
+            → Conv2d 96→48, 3×3 → PixelShuffle(4×) → Output (3ch, 4× resolution)
+```
+
+- ~1M parameters (4 MB on disk)
+- Loss: L1 + perceptual (VGG-16 features)
+- Optimizer: Adam with ReduceLROnPlateau, early stopping
 
 ## Dataset
 
