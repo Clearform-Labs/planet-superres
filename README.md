@@ -4,6 +4,8 @@
 
 **Best model (v3): +0.90 dB PSNR over bicubic, 0.616 SSIM, 0.470 LPIPS** on held-out test scenes.
 
+![Full-image comparison on Boston (unseen scene) — LR input, bicubic baseline, CNN prediction, HR ground truth with zoomed crop regions](assets/boston_comparison.png)
+
 ## Results
 
 | Method | PSNR (dB) | SSIM | LPIPS |
