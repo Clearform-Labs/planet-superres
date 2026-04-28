@@ -1,5 +1,0 @@
-Experiment,PSNR (dB),SSIM,LPIPS,Delta PSNR
-Bicubic (baseline),22.24,0.501,0.6224,0.0
-v1_l1_only_4x,22.9,0.5966,0.5072,0.66
-v2_perceptual_4x,22.92,0.6,0.4869,0.67
-v3_more_data_4x,23.14,0.616,0.4703,0.9
