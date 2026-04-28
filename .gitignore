@@ -8,7 +8,6 @@ data/manifest.csv
 
 # Experiments (model weights, per-run results)
 experiments/
-models/
 
 # Python
 __pycache__/
